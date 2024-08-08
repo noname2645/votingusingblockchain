@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting System</title>
+    <script>
+        async function vote(candidateId) {
+            try {
+                const response = await fetch('http://localhost:3000/vote', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ candidateId })
+                });
+
+                if (response.ok) {
+                    alert(`Voted for candidate ${candidateId} successfully!`);
+                } else {
+                    const errorText = await response.text();
+                    alert('An error occurred while voting: ' + errorText);
+                }
+            } catch (error) {
+                console.error('Error voting:', error);
+                alert('An error occurred while voting.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Vote for Your Favorite Candidate</h1>
+    <button onclick="vote(0)">Vote for Apple</button>
+    <button onclick="vote(1)">Vote for Banana</button>
+    <button onclick="vote(2)">Vote for Orange</button>
+    <button onclick="vote(3)">Vote for Watermelon</button>
+</body>
+</html>
