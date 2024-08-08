@@ -19,7 +19,7 @@
                     alert(`Voted for candidate ${candidateId} successfully!`);
                 } else {
                     const errorText = await response.text();
-                    alert('An error occurred while voting: ' + errorText);
+                    alert('An error occurred while voting:');
                 }
             } catch (error) {
                 console.error('Error voting:', error);
