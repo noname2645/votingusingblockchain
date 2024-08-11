@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Voting System</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <header>
+        <nav class="home">
+            <a href="#" onclick="showhome()">Home</a>
+        </nav>
+    </header>
+    <div class="loginform">
+        <div class="box">
+            <form id="logform">
+                <h3>Login</h3>
+                <div class="inputbox">
+                    <input type="email" required="required" id="email">
+                    <span>Email</span>
+                    <i></i>
+                </div>
+                <div class="inputbox">
+                    <input type="password" required="required" id="password">
+                    <span>Password</span>
+                    <i></i>
+                </div>
+                <div class="links">
+                    <a href="#">Forgot Password</a>
+                    <input type="checkbox">Remember Me
+                </div>
+                <button type="submit" id="login">LOGIN</button>
+            </form>
+        </div>
+    </div>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+    </style>
+    <script>
+        function showhome() {
+            window.location.href = "index.html";
+        }
+    </script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js';
+        import { getDatabase, ref, get, update } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyANQW_TIeuMUJGoawQ_N6m63gVhSeJWXhE",
+            authDomain: "votinginblockchain.firebaseapp.com",
+            databaseURL: "https://votinginblockchain-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "votinginblockchain",
+            storageBucket: "votinginblockchain.appspot.com",
+            messagingSenderId: "825188836902",
+            appId: "1:825188836902:web:86dbf83a25b9ba554ae8e7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        document.getElementById("logform").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            signInWithEmailAndPassword(auth, email, password)
+            .then(async (userCredential) => {
+                const user = userCredential.user;
+                const userRef = ref(db, 'users/' + user.uid);
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    if (userData.hasVoted) {
+                        alert("You have already casted your vote.");
+                        window.location.href = "index.html";
+                    } else {
+                        window.location.href = "index.html"; // Redirect to the voting page
+                    }
+                } else {
+                    alert("User data not found.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error during login:", error);
+                alert("Error: " + error.message);
+            });
+        });
+    </script>
+</body>
+</html>

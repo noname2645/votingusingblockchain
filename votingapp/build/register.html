@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Voting System</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+<body>
+    <header>
+        <nav class="home">
+            <a href="#" onclick="showhome()">Home</a>
+        </nav>
+    </header>
+    <div class="registerform">
+        <div class="box">
+            <form id="regform">
+                <h3>Register</h3>
+                <div class="inputbox">
+                    <input type="text" required="required" id="username">
+                    <span>Username</span>
+                    <i></i>
+                </div>
+                <div class="inputbox">
+                    <input type="password" required="required" id="password">
+                    <span>Password</span>
+                    <i></i>
+                </div>
+                <div class="inputbox">
+                    <input type="email" required="required" id="email">
+                    <span>Email</span>
+                    <i></i>
+                </div>
+                <div class="links">
+                    <a href="#" onclick="showLoginPage()">Already have an account? LOGIN</a>
+                </div>
+                <input type="submit" value="REGISTER" class="submit" id="submit">
+            </form>
+        </div>
+    </div>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+    </style>
+    <script>
+        function showLoginPage() {
+            window.location.href = "login.html";
+        }
+    </script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js';
+        import { getDatabase, ref, set } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js';
+        import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyANQW_TIeuMUJGoawQ_N6m63gVhSeJWXhE",
+            authDomain: "votinginblockchain.firebaseapp.com",
+            databaseURL: "https://votinginblockchain-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "votinginblockchain",
+            storageBucket: "votinginblockchain.appspot.com",
+            messagingSenderId: "825188836902",
+            appId: "1:825188836902:web:86dbf83a25b9ba554ae8e7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        document.getElementById("regform").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+
+                const userRef = ref(db, 'users/' + user.uid);
+                set(userRef, {
+                    username: username,
+                    email: email,
+                    hasVoted: false
+                }).then(() => {
+                    alert("Registration successful!");
+                    window.location.href = "login.html";
+                }).catch((error) => {
+                    console.error("Error saving user data:", error);
+                    alert("Error saving user data. Please try again.");
+                });
+
+            }).catch((error) => {
+                console.error("Error during registration:", error);
+                alert("Error: " + error.message);
+            });
+        });
+    </script>
+</body>
+</html>
