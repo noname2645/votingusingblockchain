@@ -3,10 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voting System</title>
-    <script>
-        async function vote(candidateId) {
-            try {
+    <title>Voting System</title>   
+</head>
+<body>
+    <h1>Vote for Your Favorite Candidate</h1>
+    <button onclick="vote(1)">Vote for Apple</button>
+    <button onclick="vote(2)">Vote for Banana</button>
+    <button onclick="vote(3)">Vote for Orange</button>
+    <button onclick="vote(4)">Vote for Watermelon</button>
+</body>
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js';
+    import { getAuth } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js';
+    import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js';
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyANQW_TIeuMUJGoawQ_N6m63gVhSeJWXhE",
+        authDomain: "votinginblockchain.firebaseapp.com",
+        databaseURL: "https://votinginblockchain-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "votinginblockchain",
+        storageBucket: "votinginblockchain.appspot.com",
+        messagingSenderId: "825188836902",
+        appId: "1:825188836902:web:86dbf83a25b9ba554ae8e7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // Expose vote function to the global scope
+    window.vote = async function(candidateId) {
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                const userId = user.uid;
+
+                // Check if the user has already voted
+                const voteRef = ref(db, 'votes/' + userId);
+                const voteSnap = await get(voteRef);
+                if (voteSnap.exists()) {
+                    alert("You have already voted!");
+                    return;
+                }
+
+                // Cast vote using your existing logic
                 const response = await fetch('http://localhost:3000/vote', {
                     method: 'POST',
                     headers: {
@@ -16,25 +56,32 @@
                 });
 
                 if (response.ok) {
+                    // Store vote in Realtime Database
+                    await set(voteRef, {
+                      
+                        candidateId,
+                        timestamp: new Date().toISOString() // Using JavaScript Date for timestamp
+                    });
                     alert(`Voted for candidate ${candidateId} successfully!`);
                 } else {
                     const errorText = await response.text();
                     alert('An error occurred while voting: ' + errorText);
                 }
-            } catch (error) {
-                console.error('Error voting:', error);
-                alert('An error occurred while voting.');
+            } else {
+                alert("You need to be logged in to vote.");
             }
+        } catch (error) {
+            console.error('Error voting:', error);
+            alert('An error occurred while voting.');
         }
-    </script>
-</head>
-<body>
-    <h1>Vote for Your Favorite Candidate</h1>
-    <button onclick="vote(0)">Vote for Apple</button>
-    <button onclick="vote(1)">Vote for Banana</button>
-    <button onclick="vote(2)">Vote for Orange</button>
-    <button onclick="vote(3)">Vote for Watermelon</button>
-</body>
+    }
+
+    // Listen to auth state changes
+    auth.onAuthStateChanged(user => {
+        if (!user) {
+            // Redirect to login page if not logged in
+            window.location.href = "login.html";
+        }
+    });
+</script>
 </html>
-
-
