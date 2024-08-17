@@ -156,25 +156,30 @@ const contractAddress = '0xfDF08D1E744eE59f027084e24F5Bf9dd3fC8786e'; // Replace
 const contract = new ethers.Contract(contractAddress, contractABI, wallet);
 
 app.post('/vote', async (req, res) => {
-    const { candidateId } = req.body;
+  const { candidateId } = req.body;
 
-    try {
-        const tx = await contract.vote(candidateId);
-        await tx.wait(); // Wait for the transaction to be mined
+  try {
+      const tx = await contract.vote(candidateId);
+      await tx.wait(); // Wait for the transaction to be mined
 
-        // Update Firebase with the new vote
-        const candidateRef = db.collection('votes').doc(candidateId.toString());
-        await candidateRef.set({
-            candidateId: candidateId,
-            timestamp: admin.firestore.FieldValue.serverTimestamp()
-        });
+      // Get the UTC timestamp
+      const utcTimestamp = admin.firestore.Timestamp.now();
 
-        res.send('Vote cast successfully');
-    } catch (error) {
-        res.status(500).send(error.toString());
-    }
+      // Convert the UTC timestamp to IST
+      const istTimestamp = new Date(utcTimestamp.toDate().getTime() + (5.5 * 60 * 60 * 1000));
+
+      // Update Firebase with the new vote and IST timestamp
+      const candidateRef = db.collection('votes').doc(candidateId.toString());
+      await candidateRef.set({
+          candidateId: candidateId,
+          timestamp: istTimestamp
+      });
+
+      res.send('Vote cast successfully');
+  } catch (error) {
+      res.status(500).send(error.toString());
+  }
 });
-
 
 app.setMaxListeners(20);
 

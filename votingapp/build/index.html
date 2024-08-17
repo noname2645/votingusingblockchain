@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voting System</title>   
-</head>
-<body>
-    <h1>Vote for Your Favorite Candidate</h1>
-    <button onclick="vote(1)">Vote for Apple</button>
-    <button onclick="vote(2)">Vote for Banana</button>
-    <button onclick="vote(3)">Vote for Orange</button>
-    <button onclick="vote(4)">Vote for Watermelon</button>
-</body>
-<script type="module">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Voting System</title>
+    </head>
+    <body>
+        <h1>Vote for Your Favorite Candidate</h1>
+        <button onclick="vote(1)">Vote for Apple</button>
+        <button onclick="vote(2)">Vote for Banana</button>
+        <button onclick="vote(3)">Vote for Orange</button>
+        <button onclick="vote(4)">Vote for Watermelon</button>
+    </body>
+    <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js';
     import { getAuth } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js';
     import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js';
@@ -56,12 +56,16 @@
                 });
 
                 if (response.ok) {
-                    // Store vote in Realtime Database
+                    // Convert UTC timestamp to IST and store it in Realtime Database
+                    const utcTimestamp = new Date().getTime();
+                    const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+                    const istTimestamp = new Date(utcTimestamp + istOffset).toISOString();
+
                     await set(voteRef, {
-                      
-                        candidateId,
-                        timestamp: new Date().toISOString() // Using JavaScript Date for timestamp
+                        candidateId: candidateId,
+                        timestamp: istTimestamp // Storing the IST timestamp
                     });
+
                     alert(`Voted for candidate ${candidateId} successfully!`);
                 } else {
                     const errorText = await response.text();
