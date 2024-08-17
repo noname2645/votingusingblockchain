@@ -4,13 +4,66 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Voting System</title>
+        <link rel="stylesheet" href="votingpage.css">
     </head>
     <body>
-        <h1>Vote for Your Favorite Candidate</h1>
-        <button onclick="vote(1)">Vote for Apple</button>
-        <button onclick="vote(2)">Vote for Banana</button>
-        <button onclick="vote(3)">Vote for Orange</button>
-        <button onclick="vote(4)">Vote for Watermelon</button>
+        <div id="Header">
+            <h1>Vote For Your Favourite Candidate</h1>
+
+        </div>
+        <section class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </section>
+
+        <div class="cards-container">
+            <div class="myCard" onclick="vote(1)">
+                <div class="innerCard">
+                    <div class="frontSide">
+                        <p class="title">PARTY A</p>
+                    </div>
+                    <div class="backSide">
+                        <p class="title">ARE YOU SURE?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="myCard">
+                <div class="innerCard" onclick="vote(2)">
+                    <div class="frontSide">
+                        <p class="title">PARTY B</p>
+                    </div>
+                    <div class="backSide">
+                        <p class="title">ARE YOU SURE?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="myCard" onclick="vote(3)">
+                <div class="innerCard">
+                    <div class="frontSide">
+                        <p class="title">PARTY C</p>
+                    </div>
+                    <div class="backSide">
+                        <p class="title">ARE YOU SURE?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="myCard" onclick="vote(4)">
+                <div class="innerCard">
+                    <div class="frontSide">
+                        <p class="title">PARTY D</p>
+                    </div>
+                    <div class="backSide">
+                        <p class="title">ARE YOU SURE?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
     <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js';
