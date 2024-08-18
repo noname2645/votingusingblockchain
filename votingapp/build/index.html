@@ -1,144 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Voting System</title>
-        <link rel="stylesheet" href="votingpage.css">
-    </head>
-    <body>
-        <div id="Header">
-            <h1>Vote For Your Favourite Candidate</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting System</title>
+    <link rel="stylesheet" href="votingpage.css">
+</head>
+<body>
+    <div id="Header">
+        <h1>Vote For Your Favourite Candidate</h1>
+    </div>
+    <section class="dots-container">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </section>
 
-        </div>
-        <section class="dots-container">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </section>
-
-        <div class="cards-container">
-            <div class="myCard" onclick="vote(1)">
-                <div class="innerCard">
-                    <div class="frontSide">
-                        <p class="title">PARTY A</p>
-                    </div>
-                    <div class="backSide">
-                        <p class="title">ARE YOU SURE?</p>
-                    </div>
+    <div class="cards-container">
+        <div class="myCard" onclick="vote(1)">
+            <div class="innerCard">
+                <div class="frontSide">
+                    <p class="title">PARTY A</p>
                 </div>
-            </div>
-
-            <div class="myCard">
-                <div class="innerCard" onclick="vote(2)">
-                    <div class="frontSide">
-                        <p class="title">PARTY B</p>
-                    </div>
-                    <div class="backSide">
-                        <p class="title">ARE YOU SURE?</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="myCard" onclick="vote(3)">
-                <div class="innerCard">
-                    <div class="frontSide">
-                        <p class="title">PARTY C</p>
-                    </div>
-                    <div class="backSide">
-                        <p class="title">ARE YOU SURE?</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="myCard" onclick="vote(4)">
-                <div class="innerCard">
-                    <div class="frontSide">
-                        <p class="title">PARTY D</p>
-                    </div>
-                    <div class="backSide">
-                        <p class="title">ARE YOU SURE?</p>
-                    </div>
+                <div class="backSide">
+                    <p class="title">ARE YOU SURE?</p>
                 </div>
             </div>
         </div>
-    </body>
-    <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js';
-    import { getAuth } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js';
-    import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js';
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyANQW_TIeuMUJGoawQ_N6m63gVhSeJWXhE",
-        authDomain: "votinginblockchain.firebaseapp.com",
-        databaseURL: "https://votinginblockchain-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "votinginblockchain",
-        storageBucket: "votinginblockchain.appspot.com",
-        messagingSenderId: "825188836902",
-        appId: "1:825188836902:web:86dbf83a25b9ba554ae8e7"
-    };
+        <div class="myCard" onclick="vote(2)">
+            <div class="innerCard">
+                <div class="frontSide">
+                    <p class="title">PARTY B</p>
+                </div>
+                <div class="backSide">
+                    <p class="title">ARE YOU SURE?</p>
+                </div>
+            </div>
+        </div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+        <div class="myCard" onclick="vote(3)">
+            <div class="innerCard">
+                <div class="frontSide">
+                    <p class="title">PARTY C</p>
+                </div>
+                <div class="backSide">
+                    <p class="title">ARE YOU SURE?</p>
+                </div>
+            </div>
+        </div>
 
-    // Expose vote function to the global scope
-    window.vote = async function(candidateId) {
-        try {
-            const user = auth.currentUser;
-            if (user) {
-                const userId = user.uid;
+        <div class="myCard" onclick="vote(4)">
+            <div class="innerCard">
+                <div class="frontSide">
+                    <p class="title">PARTY D</p>
+                </div>
+                <div class="backSide">
+                    <p class="title">ARE YOU SURE?</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                // Check if the user has already voted
-                const voteRef = ref(db, 'votes/' + userId);
-                const voteSnap = await get(voteRef);
-                if (voteSnap.exists()) {
-                    alert("You have already voted!");
-                    return;
-                }
+    <!-- Custom Alert Modal -->
+    <div id="customAlert" class="alert-container">
+        <div class="alert-box">
+            <span id="alertMessage" class="alert-message"></span>
+            <button class="alert-button" onclick="closeAlert()">OK</button>
+        </div>
+    </div>
 
-                // Cast vote using your existing logic
-                const response = await fetch('http://localhost:3000/vote', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ candidateId })
+</body>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js';
+import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyANQW_TIeuMUJGoawQ_N6m63gVhSeJWXhE",
+    authDomain: "votinginblockchain.firebaseapp.com",
+    databaseURL: "https://votinginblockchain-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "votinginblockchain",
+    storageBucket: "votinginblockchain.appspot.com",
+    messagingSenderId: "825188836902",
+    appId: "1:825188836902:web:86dbf83a25b9ba554ae8e7"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+function showAlert(message) {
+    document.getElementById("alertMessage").textContent = message;
+    document.getElementById("customAlert").style.display = "flex";
+}
+
+function closeAlert() {
+    const alertElement = document.getElementById("customAlert");
+    alertElement.style.display = "none";  // This hides the alert
+}
+
+// Expose closeAlert to the global scope
+window.closeAlert = closeAlert;
+
+// Expose vote function to the global scope
+window.vote = async function(candidateId) {
+    try {
+        const user = auth.currentUser;
+        if (user) {
+            const userId = user.uid;
+
+            // Check if the user has already voted
+            const voteRef = ref(db, 'votes/' + userId);
+            const voteSnap = await get(voteRef);
+            if (voteSnap.exists()) {
+                showAlert("You have already voted!");
+                return;
+            }
+
+            // Cast vote using your existing logic
+            const response = await fetch('http://localhost:3000/vote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ candidateId })
+            });
+
+            if (response.ok) {
+                // Convert UTC timestamp to IST and store it in Realtime Database
+                const utcTimestamp = new Date().getTime();
+                const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+                const istTimestamp = new Date(utcTimestamp + istOffset).toISOString();
+
+                await set(voteRef, {
+                    candidateId: candidateId,
+                    timestamp: istTimestamp // Storing the IST timestamp
                 });
 
-                if (response.ok) {
-                    // Convert UTC timestamp to IST and store it in Realtime Database
-                    const utcTimestamp = new Date().getTime();
-                    const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
-                    const istTimestamp = new Date(utcTimestamp + istOffset).toISOString();
-
-                    await set(voteRef, {
-                        candidateId: candidateId,
-                        timestamp: istTimestamp // Storing the IST timestamp
-                    });
-
-                    alert(`Voted for candidate ${candidateId} successfully!`);
-                } else {
-                    const errorText = await response.text();
-                    alert('An error occurred while voting: ' + errorText);
-                }
+                showAlert(`Voted for candidate ${candidateId} successfully!`);
             } else {
-                alert("You need to be logged in to vote.");
+                const errorText = await response.text();
+                showAlert('An error occurred while voting: ' + errorText);
             }
-        } catch (error) {
-            console.error('Error voting:', error);
-            alert('An error occurred while voting.');
+        } else {
+            showAlert("You need to be logged in to vote.");
         }
+    } catch (error) {
+        console.error('Error voting:', error);
+        showAlert('An error occurred while voting.');
     }
+}
 
-    // Listen to auth state changes
-    auth.onAuthStateChanged(user => {
-        if (!user) {
-            // Redirect to login page if not logged in
-            window.location.href = "login.html";
-        }
-    });
+// Listen to auth state changes
+auth.onAuthStateChanged(user => {
+    if (!user) {
+        // Redirect to login page if not logged in
+        window.location.href = "login.html";
+    }
+});
 </script>
 </html>

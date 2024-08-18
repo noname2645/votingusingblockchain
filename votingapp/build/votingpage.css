@@ -118,6 +118,17 @@ h1 {
   } */
 }
 
+@keyframes alert {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+}
+100% {
+    transform: scale(1);
+    opacity: 1;
+}
+}
+
 .cards-container {
   font-family: "Cairo";
   display: flex;
@@ -211,4 +222,47 @@ h1 {
   animation: animate 5s linear infinite;
 }
 
+/* Custom Alert Styling */
+.alert-container {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* Ensure it's on top */
+  justify-content: center;
+  align-items: center;
+  animation: alert 0.5s ease-in-out forwards;
+  transition: background-color 0.5s ease-in-out; /* Smooth transition for background color */
+}
 
+.alert-box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  max-width: 400px;
+  width: 80%;
+}
+
+.alert-message {
+  font-family: "Cairo";
+  font-size: 1.5em;
+}
+
+.alert-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.alert-button:hover {
+  background-color: #45a049;
+}
