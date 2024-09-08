@@ -112,6 +112,7 @@ window.vote = async function(candidateId) {
         const user = auth.currentUser;
         if (user) {
             const userId = user.uid;
+            const userEmail = user.email; // Get the user's email
 
             // Check if the user has already voted
             const voteRef = ref(db, 'votes/' + userId);
@@ -121,13 +122,13 @@ window.vote = async function(candidateId) {
                 return;
             }
 
-            // Cast vote using your existing logic
+            // Cast vote
             const response = await fetch('http://localhost:3000/vote', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ candidateId })
+                body: JSON.stringify({ candidateId, userEmail }) // Pass userEmail to backend
             });
 
             if (response.ok) {
@@ -137,11 +138,12 @@ window.vote = async function(candidateId) {
                 const istTimestamp = new Date(utcTimestamp + istOffset).toISOString();
 
                 await set(voteRef, {
-                    candidateId: candidateId,
-                    timestamp: istTimestamp // Storing the IST timestamp
+                    
+                    timestamp: istTimestamp
                 });
 
-                showAlert(`Voted for candidate ${candidateId} successfully!`);
+                showAlert(`Voted for candidate ${candidateId} successfully!
+                           A confirmation email has been sent to your registered email`);
             } else {
                 const errorText = await response.text();
                 showAlert('An error occurred while voting: ' + errorText);
@@ -154,6 +156,7 @@ window.vote = async function(candidateId) {
         showAlert('An error occurred while voting.');
     }
 }
+
 
 // Listen to auth state changes
 auth.onAuthStateChanged(user => {
