@@ -86,7 +86,7 @@ const contractABI = [
   }
 ];
 
-const contractAddress = '0xfDF08D1E744eE59f027084e24F5Bf9dd3fC8786e'; // Replace with your contract address
+const contractAddress = '0x1e914A96C18Ba6666277c76533b1AC6bcAD4F871'; // Replace with your contract address
 const contract = new ethers.Contract(contractAddress, contractABI, wallet);
 
 // Nodemailer Transporter Configuration
