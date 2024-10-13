@@ -1,85 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voting System</title>
-    <link rel="stylesheet" href="votingpage.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voting System</title>
+  <link rel="stylesheet" href="votingpage.css">
 </head>
+
 <body>
-    <div id="Header">
-        <h1>Vote For Your Favourite Candidate</h1>
+  <button class="btn1">
+    VOTE FOR YOUR FAVOURITE CANDIDATE
+  </button>
+
+  <div aria-busy="true" aria-label="Loading" role="progressbar" class="container">
+    <div class="swing">
+      <div class="swing-l"></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div class="swing-r"></div>
     </div>
-    <section class="dots-container">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-    </section>
+    <div class="shadow">
+      <div class="shadow-l"></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div class="shadow-r"></div>
+    </div>
+  </div>
 
-    <div class="cards-container">
-        <div class="myCard" onclick="vote(1)">
-            <div class="innerCard">
-                <div class="frontSide">
-                    <p class="title">PARTY A</p>
-                </div>
-                <div class="backSide">
-                    <p class="title">ARE YOU SURE?</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="myCard" onclick="vote(2)">
-            <div class="innerCard">
-                <div class="frontSide">
-                    <p class="title">PARTY B</p>
-                </div>
-                <div class="backSide">
-                    <p class="title">ARE YOU SURE?</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="myCard" onclick="vote(3)">
-            <div class="innerCard">
-                <div class="frontSide">
-                    <p class="title">PARTY C</p>
-                </div>
-                <div class="backSide">
-                    <p class="title">ARE YOU SURE?</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="myCard" onclick="vote(4)">
-            <div class="innerCard">
-                <div class="frontSide">
-                    <p class="title">PARTY D</p>
-                </div>
-                <div class="backSide">
-                    <p class="title">ARE YOU SURE?</p>
-                </div>
-            </div>
-        </div>
+  <div class="cards-container">
+    <div class="myCard">
+      <img src="bugatti-Photoroom.png" alt="lol">
+      <button class="btn-class-name" onclick="vote(1)">
+        <span class="back"></span>
+        <span class="front">PARTY A</span>
+      </button>
     </div>
 
-    <!-- Custom Alert Modal -->
-    <div id="customAlert" class="alert-container">
-        <div class="alert-box">
-            <span id="alertMessage" class="alert-message"></span>
-            <button class="alert-button" onclick="closeAlert()">OK</button>
-        </div>
+    <div class="myCard">
+      <img src="Lamborghini New 2024 Colored.png" alt="lol">
+      <button class="btn-class-name" onclick="vote(2)">
+        <span class="back"></span>
+        <span class="front">PARTY B</span>
+      </button>
     </div>
+
+    <div class="myCard">
+      <img src="koenigsegg-Photoroom.png" alt="lol">
+      <button class="btn-class-name" onclick="vote(3)">
+        <span class="back"></span>
+        <span class="front">PARTY C</span>
+      </button>
+    </div>
+
+    <div class="myCard">
+      <img src="Aston Martin New 2022.png" alt="lol">
+      <button class="btn-class-name" onclick="vote(4)">
+        <span class="back"></span>
+        <span class="front">PARTY D</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Custom Alert Modal -->
+  <div id="customAlert" class="alert-container">
+    <div class="alert-box">
+      <img id="greentick" src="success-tick-dribbble-ezgif.com-crop.gif" alt="okay">
+      <span id="alertMessage" class="alert-message"></span>
+      <button class="alert-button" onclick="logout()">OK</button>
+    </div>
+  </div>
 
 </body>
 
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js';
-import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js';
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js';
+  import { getAuth, signOut } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js';
+  import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js';
 
-const firebaseConfig = {
+  const firebaseConfig = {
     apiKey: "AIzaSyANQW_TIeuMUJGoawQ_N6m63gVhSeJWXhE",
     authDomain: "votinginblockchain.firebaseapp.com",
     databaseURL: "https://votinginblockchain-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -87,83 +92,93 @@ const firebaseConfig = {
     storageBucket: "votinginblockchain.appspot.com",
     messagingSenderId: "825188836902",
     appId: "1:825188836902:web:86dbf83a25b9ba554ae8e7"
-};
+  };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
 
-function showAlert(message) {
+  function showAlert(message) {
     document.getElementById("alertMessage").textContent = message;
     document.getElementById("customAlert").style.display = "flex";
-}
+  }
 
-function closeAlert() {
+  // Updated Logout Function
+  function logout(){
+    signOut(auth).then(() => {
+      window.location.href = "login.html";  // Redirect to login page after logout
+    }).catch((error) => {
+      console.error('Error logging out:', error);
+    });
+  }
+
+  // Expose logout function globally
+  window.logout = logout;
+
+  function closeAlert() {
     const alertElement = document.getElementById("customAlert");
-    alertElement.style.display = "none";  // This hides the alert
-}
+    alertElement.style.display = "none";  // Hide the alert
+  }
 
-// Expose closeAlert to the global scope
-window.closeAlert = closeAlert;
+  // Expose closeAlert to the global scope
+  window.closeAlert = closeAlert;
 
-// Expose vote function to the global scope
-window.vote = async function(candidateId) {
+  // Expose vote function to the global scope
+  window.vote = async function (candidateId) {
     try {
-        const user = auth.currentUser;
-        if (user) {
-            const userId = user.uid;
-            const userEmail = user.email; // Get the user's email
+      const user = auth.currentUser;
+      if (user) {
+        const userId = user.uid;
+        const userEmail = user.email;
 
-            // Check if the user has already voted
-            const voteRef = ref(db, 'votes/' + userId);
-            const voteSnap = await get(voteRef);
-            if (voteSnap.exists()) {
-                showAlert("You have already voted!");
-                return;
-            }
-
-            // Cast vote
-            const response = await fetch('http://localhost:3000/vote', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ candidateId, userEmail }) // Pass userEmail to backend
-            });
-
-            if (response.ok) {
-                // Convert UTC timestamp to IST and store it in Realtime Database
-                const utcTimestamp = new Date().getTime();
-                const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
-                const istTimestamp = new Date(utcTimestamp + istOffset).toISOString();
-
-                await set(voteRef, {
-                    
-                    timestamp: istTimestamp
-                });
-
-                showAlert(`Voted for candidate ${candidateId} successfully!
-                           A confirmation email has been sent to your registered email`);
-            } else {
-                const errorText = await response.text();
-                showAlert('An error occurred while voting: ' + errorText);
-            }
-        } else {
-            showAlert("You need to be logged in to vote.");
+        // Check if the user has already voted
+        const voteRef = ref(db, 'votes/' + userId);
+        const voteSnap = await get(voteRef);
+        if (voteSnap.exists()) {
+          showAlert("You have already voted!");
+          return;
         }
+
+        // Cast vote
+        const response = await fetch('http://localhost:3000/vote', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ candidateId, userEmail })
+        });
+
+        if (response.ok) {
+          // Convert UTC timestamp to IST and store it in Realtime Database
+          const utcTimestamp = new Date().getTime();
+          const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+          const istTimestamp = new Date(utcTimestamp + istOffset).toISOString();
+
+          await set(voteRef, {
+            timestamp: istTimestamp
+          });
+
+          showAlert(`Voted for candidate ${candidateId} successfully! A confirmation email has been sent.`);
+        } else {
+          const errorText = await response.text();
+          showAlert('An error occurred while voting: ' + errorText);
+        }
+      } else {
+        showAlert("You need to be logged in to vote.");
+      }
     } catch (error) {
-        console.error('Error voting:', error);
-        showAlert('An error occurred while voting.');
+      console.error('Error voting:', error);
+      showAlert('An error occurred while voting.');
     }
-}
+  }
 
-
-// Listen to auth state changes
-auth.onAuthStateChanged(user => {
+  // Listen to auth state changes
+  auth.onAuthStateChanged(user => {
     if (!user) {
-        // Redirect to login page if not logged in
-        window.location.href = "login.html";
+      // Redirect to login page if not logged in
+      window.location.href = "login.html";
     }
-});
+  });
 </script>
+
 </html>

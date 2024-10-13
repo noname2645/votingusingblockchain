@@ -24,7 +24,7 @@ const db = admin.firestore(); // Use Firestore database
 
 const provider = new ethers.providers.JsonRpcProvider('http://localhost:7545'); // Change this to your Ganache URL if different
 
-const privateKey = '0x853d220e53993d6ab4d6c81f4da9bb59d177d721189e91545d7daab7450eab39'; // Replace with your private key from Ganache
+const privateKey = '0x73159a8d0d5686bfa4a4927a43649e124c954c75f5eaa2ab993388049a4a9baa'; // Replace with your private key from Ganache
 const wallet = new ethers.Wallet(privateKey, provider);
 
 const contractABI = [
@@ -86,7 +86,7 @@ const contractABI = [
   }
 ];
 
-const contractAddress = '0x1e914A96C18Ba6666277c76533b1AC6bcAD4F871'; // Replace with your contract address
+const contractAddress = '0x890DeeD05d174b070Da656364B0EEC8e3dfEf02b'; // Replace with your contract address
 const contract = new ethers.Contract(contractAddress, contractABI, wallet);
 
 // Nodemailer Transporter Configuration
