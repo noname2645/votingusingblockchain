@@ -13,25 +13,14 @@
     VOTE FOR YOUR FAVOURITE CANDIDATE
   </button>
 
-  <div aria-busy="true" aria-label="Loading" role="progressbar" class="container">
-    <div class="swing">
-      <div class="swing-l"></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div class="swing-r"></div>
-    </div>
-    <div class="shadow">
-      <div class="shadow-l"></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div class="shadow-r"></div>
-    </div>
+ 
+  <div class="cont">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <!-- <div class="shadow"></div>
+      <div class="shadow"></div>
+      <div class="shadow"></div> -->
   </div>
 
   <div class="cards-container">
@@ -52,7 +41,7 @@
     </div>
 
     <div class="myCard">
-      <img src="koenigsegg-Photoroom.png" alt="lol">
+      <img src="ferrari-Photoroom.png" alt="lol">
       <button class="btn-class-name" onclick="vote(3)">
         <span class="back"></span>
         <span class="front">PARTY C</span>
@@ -60,7 +49,7 @@
     </div>
 
     <div class="myCard">
-      <img src="Aston Martin New 2022.png" alt="lol">
+      <img src="Ford Old.png" alt="lol">
       <button class="btn-class-name" onclick="vote(4)">
         <span class="back"></span>
         <span class="front">PARTY D</span>
@@ -69,14 +58,32 @@
   </div>
 
   <!-- Custom Alert Modal -->
-  <div id="customAlert" class="alert-container">
-    <div class="alert-box">
-      <img id="greentick" src="success-tick-dribbble-ezgif.com-crop.gif" alt="okay">
-      <span id="alertMessage" class="alert-message"></span>
-      <button class="alert-button" onclick="logout()">OK</button>
+  
+    <div id="success-box">
+      <div class="dot"></div>
+      <div class="dot two"></div>
+      <div class="face">
+        <div class="eye"></div>
+        <div class="eye right"></div>
+        <div class="mouth happy"></div>
+      </div>
+      <div class="shadow scale"></div>
+      <div class="message"><h1 class="alert">Success! check your email inbox</h1></div>
+      <button class="happy-box" onclick="window.location.href='register.html'">OKAY! LOGOUT</button>
     </div>
-  </div>
-
+    <div id="error-box">
+      <div class="dot"></div>
+      <div class="dot two"></div>
+      <div class="face2">
+        <div class="eye"></div>
+        <div class="eye right"></div>
+        <div class="mouth sad"></div>
+      </div>
+      <div class="shadow move"></div>
+      <div class="message2"><h1 class="alert2">Error! Already Voted</h1></div>
+      <button class="sad-box" onclick="window.location.href='register.html'">LOGOUT</button>
+    </div>
+ 
 </body>
 
 <script type="module">
@@ -98,15 +105,18 @@
   const auth = getAuth(app);
   const db = getDatabase(app);
 
-  function showAlert(message) {
-    document.getElementById("alertMessage").textContent = message;
-    document.getElementById("customAlert").style.display = "flex";
-  }
-
-  // Updated Logout Function
-  function logout(){
+   // Updated Logout Function
+   function logout(){
     signOut(auth).then(() => {
       window.location.href = "login.html";  // Redirect to login page after logout
+    }).catch((error) => {
+      console.error('Error logging out:', error);
+    });
+  }
+  
+  function register(){
+    signOut(auth).then(() => {
+      window.location.href = "register.html";  // Redirect to login page after logout
     }).catch((error) => {
       console.error('Error logging out:', error);
     });
@@ -115,13 +125,16 @@
   // Expose logout function globally
   window.logout = logout;
 
-  function closeAlert() {
-    const alertElement = document.getElementById("customAlert");
-    alertElement.style.display = "none";  // Hide the alert
+  // Show alert boxes based on the result
+  function showSuccess() {
+    const successBox = document.getElementById('success-box');
+    successBox.classList.add('active'); // Add active class
   }
 
-  // Expose closeAlert to the global scope
-  window.closeAlert = closeAlert;
+  function showError() {
+    const errorBox = document.getElementById('error-box');
+    errorBox.classList.add('active'); // Add active class
+  }
 
   // Expose vote function to the global scope
   window.vote = async function (candidateId) {
@@ -135,7 +148,7 @@
         const voteRef = ref(db, 'votes/' + userId);
         const voteSnap = await get(voteRef);
         if (voteSnap.exists()) {
-          showAlert("You have already voted!");
+          showError(); // Notify user that they have already voted
           return;
         }
 
@@ -158,17 +171,18 @@
             timestamp: istTimestamp
           });
 
-          showAlert(`Voted for candidate ${candidateId} successfully! A confirmation email has been sent.`);
+          showSuccess(); // Show success message
         } else {
           const errorText = await response.text();
-          showAlert('An error occurred while voting: ' + errorText);
+          console.error('Error voting:', errorText);
+          showError(); // Show error message
         }
       } else {
-        showAlert("You need to be logged in to vote.");
+        showError(); // Notify user to log in
       }
     } catch (error) {
       console.error('Error voting:', error);
-      showAlert('An error occurred while voting.');
+      showError(); // Show error message
     }
   }
 

@@ -91,11 +91,17 @@ const contract = new ethers.Contract(contractAddress, contractABI, wallet);
 
 // Nodemailer Transporter Configuration
 const transporter = nodemailer.createTransport({
+  host: '127.0.0.1',
+  port:'465',
   service: 'gmail',
+  secure:'true',
   auth: {
     user: 'weeb7286@gmail.com', // Replace with your Gmail email
-    pass: 'scji jire cwix alwu'   // Replace with your Gmail app password
-  }
+    pass: 'jvbl ytof wtse psqm'   // Replace with your Gmail app password
+  },
+  tls: {
+    rejectUnauthorized: false, // Allow self-signed certificates
+  },
 });
 
 // Function to send email
