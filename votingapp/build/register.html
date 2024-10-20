@@ -1,78 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Register - Voting System</title>
-        <link rel="stylesheet" href="register.css">
-    </head>
-    <body>
-        <header>
-            <nav class="home">
-                <a href="#" onclick="showhome()">Home</a>
-            </nav>
-        </header>
-        <div class="waveWrapper waveAnimation">
-            <div class="waveWrapperInner bgTop">
-                <div class="wave waveTop"
-                    style="background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png')">
-                    <div class="registerform">
-                        <div class="box">
-                            <form id="regform">
-                                <h3>Register</h3>
-                                <div class="inputbox">
-                                    <input type="text" required="required"
-                                        id="username">
-                                    <span>Username</span>
-                                    <i></i>
-                                </div>
-                                <div class="inputbox">
-                                    <input type="password" required="required"
-                                        id="password">
-                                    <span>Password</span>
-                                    <i></i>
-                                </div>
-                                <div class="inputbox">
-                                    <input type="email" required="required"
-                                        id="email">
-                                    <span>Email</span>
-                                    <i></i>
-                                </div>
-                                <div class="links">
-                                    <a href="#"
-                                        onclick="showLoginPage()">Already have
-                                        an account? LOGIN</a>
-                                </div>
-                                <button type="submit" id="register">
-                                    <span>REGISTER</span>
-                                    <div class="top"></div>
-                                    <div class="left"></div>
-                                    <div class="bottom"></div>
-                                    <div class="right"></div>
-                                </button>
-                            </form>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Yourself</title>
+    <link rel="stylesheet" href="register.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/votingapp/build/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/votingapp/build/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/votingapp/build/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/votingapp/build/favicon_io/site.webmanifest">
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/@favicon-kit/favicon@1/favicon.ico" type="image/x-icon">
+
+</head>
+
+<body>
+
+   
+
+
+
+    <section>
+        <img id="logo" src="newbv-Photoroom.png" alt="Failed">
+        <div id="form-ui">
+            <form action="" method="post" id="form">
+                <div id="form-body">
+                    <div id="welcome-lines">
+                        Spotify
+                    </div>
+                    
+                    <div id="input-area">
+                        <div class="form-inp">
+                            <input id="username" placeholder="username" type="username">
+                        </div>
+                        <div class="form-inp">
+                            <input id="email" placeholder="Email" type="email">
+                        </div>
+                        <div class="form-inp">
+                            <input id="password" placeholder="Password" type="password">
                         </div>
                     </div>
+                    <div id="submit-button-cvr">
+                        <button id="submit-button" type="submit">Register</button>
+                    </div>
+                    <div id="forgot-pass">
+                        <a href="login.html">Already have an account?</a>
+                    </div>
+                   
                 </div>
-            </div>
-            <div class="waveWrapperInner bgMiddle">
-                <div class="wave waveMiddle"
-                    style="background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png')"></div>
-            </div>
-            <div class="waveWrapperInner bgBottom">
-                <div class="wave waveBottom"
-                    style="background-image: url('http://front-end-noobs.com/jecko/img/wave-bot.png')"></div>
-            </div>
+            </form>
         </div>
-        <style>
+        <div class='air air1'></div>
+        <div class='air air2'></div>
+        <div class='air air3'></div>
+        <div class='air air4'></div>
+      </section>
+
+
+
+
+    <div class="center">
+        <div class="check">
+            <i class="far fa-check-circle color"></i> &nbsp; &nbsp;
+            <span id="good">Nailed It!</span>
+        </div>
+        <div class="danger">
+            <i class="far fa-times-circle shine"></i>
+            &nbsp; &nbsp;
+            <span id="wrong">Wrong Answer</span>
+        </div>
+    </div>
+
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
     </style>
-        <script>
+    <script>
         function showLoginPage() {
             window.location.href = "login.html";
         }
     </script>
-        <script type="module">
+    <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js';
         import { getDatabase, ref, set } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js';
         import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js';
@@ -91,34 +98,59 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
-        document.getElementById("regform").addEventListener("submit", function(event) {
-            event.preventDefault();
+        document.getElementById("form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form submission
+
             const username = document.getElementById("username").value;
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
+            const successBox = document.getElementsByClassName('check')[0];
+            const errorBox = document.getElementsByClassName('danger')[0];
+
+            function showNotification(notification, duration, redirect = false) {
+                notification.classList.add('active'); // Show the notification
+                notification.style.display = 'flex'; // Ensure it's displayed
+                notification.style.opacity = '1'; // Ensure it's visible
+
+                setTimeout(() => {
+                    notification.style.opacity = '0'; // Fade out
+                    setTimeout(() => {
+                        notification.classList.remove('active'); // Hide the notification
+                        notification.style.display = 'none'; // Remove from display
+
+                        if (redirect) {
+                            window.location.href = "login.html"; // Redirect to login
+                        }
+                    }, 500); // Wait for fade out before removing class
+                }, duration);
+            }
+
             createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
+                .then((userCredential) => {
+                    const user = userCredential.user;
 
-                const userRef = ref(db, 'users/' + user.uid);
-                set(userRef, {
-                    username: username,
-                    email: email,
-                    password: password
-                }).then(() => {
-                    alert("Registration successful!");
-                    window.location.href = "login.html";
+                    const userRef = ref(db, 'users/' + user.uid);
+                    set(userRef, {
+                        username: username,
+                        email: email,
+                        password: password
+                    }).then(() => {
+                        showNotification(successBox, 2000, true); // Show success and redirect
+                    }).catch((error) => {
+                        console.error("Error saving user data:", error);
+                        showNotification(errorBox, 2000); // Show error without redirect
+                    });
+
                 }).catch((error) => {
-                    console.error("Error saving user data:", error);
-                    alert("Error saving user data. Please try again.");
+                    console.error("Error during registration:", error);
+                    showNotification(errorBox, 2000); // Show error without redirect
                 });
-
-            }).catch((error) => {
-                console.error("Error during registration:", error);
-                alert("Error: " + error.message);
-            });
         });
+
+
+
     </script>
-    </body>
+</body>
+
 </html>

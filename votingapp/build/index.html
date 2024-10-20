@@ -6,21 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voting System</title>
   <link rel="stylesheet" href="votingpage.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/votingapp/build/favicon_io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/votingapp/build/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/votingapp/build/favicon_io/favicon-16x16.png">
+  <link rel="manifest" href="/votingapp/build/favicon_io/site.webmanifest">
+  
+  
 </head>
 
 <body>
+  <nav>
+    <img id="logo" src="newbv-Photoroom.png" alt="Failed">
+  </nav>
   <button class="btn1">
     VOTE FOR YOUR FAVOURITE CANDIDATE
   </button>
 
- 
+
   <div class="cont">
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <!-- <div class="shadow"></div>
-      <div class="shadow"></div>
-      <div class="shadow"></div> -->
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
   </div>
 
   <div class="cards-container">
@@ -58,32 +64,36 @@
   </div>
 
   <!-- Custom Alert Modal -->
-  
-    <div id="success-box">
-      <div class="dot"></div>
-      <div class="dot two"></div>
-      <div class="face">
-        <div class="eye"></div>
-        <div class="eye right"></div>
-        <div class="mouth happy"></div>
-      </div>
-      <div class="shadow scale"></div>
-      <div class="message"><h1 class="alert">Success! check your email inbox</h1></div>
-      <button class="happy-box" onclick="window.location.href='register.html'">OKAY! LOGOUT</button>
+
+  <div id="success-box">
+    <div class="dot"></div>
+    <div class="dot two"></div>
+    <div class="face">
+      <div class="eye"></div>
+      <div class="eye right"></div>
+      <div class="mouth happy"></div>
     </div>
-    <div id="error-box">
-      <div class="dot"></div>
-      <div class="dot two"></div>
-      <div class="face2">
-        <div class="eye"></div>
-        <div class="eye right"></div>
-        <div class="mouth sad"></div>
-      </div>
-      <div class="shadow move"></div>
-      <div class="message2"><h1 class="alert2">Error! Already Voted</h1></div>
-      <button class="sad-box" onclick="window.location.href='register.html'">LOGOUT</button>
+    <div class="shadow scale"></div>
+    <div class="message">
+      <h1 class="alert">Success! check your email inbox</h1>
     </div>
- 
+    <button class="happy-box" onclick="window.location.href='register.html'">OKAY! LOGOUT</button>
+  </div>
+  <div id="error-box">
+    <div class="dot"></div>
+    <div class="dot two"></div>
+    <div class="face2">
+      <div class="eye"></div>
+      <div class="eye right"></div>
+      <div class="mouth sad"></div>
+    </div>
+    <div class="shadow move"></div>
+    <div class="message2">
+      <h1 class="alert2">Error! Already Voted</h1>
+    </div>
+    <button class="sad-box" onclick="window.location.href='register.html'">LOGOUT</button>
+  </div>
+
 </body>
 
 <script type="module">
@@ -105,16 +115,16 @@
   const auth = getAuth(app);
   const db = getDatabase(app);
 
-   // Updated Logout Function
-   function logout(){
+  // Updated Logout Function
+  function logout() {
     signOut(auth).then(() => {
       window.location.href = "login.html";  // Redirect to login page after logout
     }).catch((error) => {
       console.error('Error logging out:', error);
     });
   }
-  
-  function register(){
+
+  function register() {
     signOut(auth).then(() => {
       window.location.href = "register.html";  // Redirect to login page after logout
     }).catch((error) => {
